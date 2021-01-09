@@ -375,7 +375,7 @@ def game(surface):
             "activeButton": -1,
             "buttonBackground": (66, 66, 66),
             "indent": (0.2, 0.1),
-            "offset": 0.05,
+            "offset": 0.01,
             "font": pg.font.Font('data/font.ttf', 50),
             "levels": levels
         },
