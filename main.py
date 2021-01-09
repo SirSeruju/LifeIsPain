@@ -300,20 +300,52 @@ def levelsMode(surface, events, modes, info):
 def exitMode(surface, events, modes, info):
     return None
 
-def authorsMode(surface, events, modes, info):
-    return (surface, modes["menu"], info)
+def creditsMode(surface, events, modes, info):
+    creditLines = [
+        "Seruju aka XutXtuX:",
+        "  https://github.com/SirSeruju",
+        "  https://github.com/XutXtuX",
+        "  https://habr.com/users/xutxtux/",
+        "Bezlikiy:",
+        "  https://github.com/Bez-log",
+        "Press any key to get back to menu..."
+    ]
+    indent = info["credits"]["indent"]
+    hintSize = info["credits"]["size"]
+    size = surface.get_size()
+    font = info["credits"]["font"]
+    for event in events:
+        if event.type == pg.QUIT:
+            return (surface, modes["exit"], info)
+        if event.type == pg.KEYDOWN or event.type == pg.MOUSEBUTTONDOWN:
+            return (surface, modes["menu"], info)
+
+    surface.fill((0, 0, 0))
+    pg.draw.rect(surface, info["credits"]["color"], ((1 - hintSize[0]) * size[0] / 2, (1 - hintSize[1]) * size[1] / 2,
+                                                  size[0] * hintSize[0],
+                                                  size[1] * hintSize[1]))
+
+    lineOffset = ((1 - hintSize[0]) * size[0] / 2 + hintSize[0] * size[0] * indent[0],
+                  (1 - hintSize[1]) * size[1] / 2 + hintSize[1] * size[1] * indent[1])
+    lineSize = hintSize[1] * size[1] * (1 - 2 * indent[1]) / len(creditLines)
+    for i in range(len(creditLines)):
+        f = font.render(creditLines[i], False, (200, 200, 200))
+        surface.blit(f, (lineOffset[0],
+                         lineOffset[1] + (lineSize - f.get_size()[1]) / 2 + lineSize * i))
+
+    return (surface, modes["credits"], info)
 
 def menuMode(surface, events, modes, info):
     buttons = [
         "Levels",
         "Help",
-        "Authors",
+        "Credits",
         "Exit"
     ]
     returnModes = [
         modes["levels"],
         modes["help"],
-        modes["authors"],
+        modes["credits"],
         modes["exit"]
     ]
     indent = info["menu"]["indent"]
@@ -363,7 +395,7 @@ def game(surface):
         "level": levelMode,
         "exit": exitMode,
         "help": helpMode,
-        "authors": authorsMode
+        "credits": creditsMode
     }
     mode = modes["menu"]
     levels = list(map(lambda x: loadLevel("data/maps/" + x), sorted(os.listdir("data/maps"))))
@@ -386,6 +418,12 @@ def game(surface):
             "levels": levels
         },
         "help": {
+            "size": (0.6, 0.8),
+            "indent": (0.1, 0.05),
+            "font": pg.font.Font('data/font.ttf', 30),
+            "color": (66, 66, 66)
+        },
+        "credits": {
             "size": (0.6, 0.8),
             "indent": (0.1, 0.05),
             "font": pg.font.Font('data/font.ttf', 30),
@@ -445,9 +483,6 @@ if __name__ == '__main__':
     pg.display.set_caption("Life is pain.")
     size = width, height = 1280, 720
     screen = pg.display.set_mode(size)
-    # colored = np.zeros(arr.shape)
-    # colored = np.sign(arr + colored)
-    # arr = lifeStep(arr)
     game(screen)
 
     running = True
