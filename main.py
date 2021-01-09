@@ -300,15 +300,20 @@ def levelsMode(surface, events, modes, info):
 def exitMode(surface, events, modes, info):
     return None
 
+def authorsMode(surface, events, modes, info):
+    return (surface, modes["menu"], info)
+
 def menuMode(surface, events, modes, info):
     buttons = [
         "Levels",
         "Help",
+        "Authors",
         "Exit"
     ]
     returnModes = [
         modes["levels"],
         modes["help"],
+        modes["authors"],
         modes["exit"]
     ]
     indent = info["menu"]["indent"]
@@ -357,7 +362,8 @@ def game(surface):
         "levels": levelsMode,
         "level": levelMode,
         "exit": exitMode,
-        "help": helpMode
+        "help": helpMode,
+        "authors": authorsMode
     }
     mode = modes["menu"]
     levels = list(map(lambda x: loadLevel("data/maps/" + x), sorted(os.listdir("data/maps"))))
@@ -436,7 +442,7 @@ def game(surface):
 if __name__ == '__main__':
     pg.init()
     pg.font.init()
-    pg.display.set_caption("")
+    pg.display.set_caption("Life is pain.")
     size = width, height = 1280, 720
     screen = pg.display.set_mode(size)
     # colored = np.zeros(arr.shape)
