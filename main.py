@@ -27,7 +27,7 @@ def loadLevel(filename):
     a2 = data[len(data) // 2:]
     a1 = list(map(lambda x: list(map(int, list(x))), a1))
     a2 = list(map(lambda x: list(map(int, list(x))), a2))
-    return (name, c, np.rot90(np.array(a1)), np.rot90(np.array(a2)))
+    return (name, c, np.flipud(np.rot90(np.array(a1))), np.flipud(np.rot90(np.array(a2))))
 
 def helpMode(surface, events, modes, info):
     helpLines = [
