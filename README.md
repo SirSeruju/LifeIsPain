@@ -1,9 +1,9 @@
 # Cellular automata puzzle game
 
 # Screenshots
-##Main menu
+## Main menu
 ![mainMenu](screenshots/mainMenu.png)
-##Level names Star
+## Level names Star
 ![starLevel](screenshots/starLevel.png)
-##Help menu
+## Help menu
 ![helpMenu](screenshots/helpMenu.png)
